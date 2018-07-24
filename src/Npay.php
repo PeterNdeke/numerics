@@ -13,8 +13,8 @@ namespace Numerics\Npay;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
-use Numericscoder\Npay\Exceptions\NullException;
-use Numericscoder\Npay\Exceptions\VerificationFailedException;
+use Numerics\Npay\Exceptions\NullException;
+use Numerics\Npay\Exceptions\VerificationFailedException;
 
 class Npay
 {
