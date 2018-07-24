@@ -15,6 +15,10 @@ return [
      * Api Secret Key
      *
      */
+    'publicKey'=>  getenv('NPAY_PUBLIC_KEY'),
+    
+    
+    
     'secretKey' => getenv('NPAY_API_KEY'),
 
     

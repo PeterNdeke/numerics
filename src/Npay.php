@@ -78,7 +78,7 @@ class Npay
      */
     public function setKey()
     {
-        $this->secretKey = Config::get('npay.secretKey');
+        $this->secretKey = Config::get('npay.publicKey');
     }
 
     /**
@@ -110,6 +110,7 @@ class Npay
             "amount" => intval(request()->amount),
             "reference" => request()->reference,
             "email" => request()->email,
+            "apiKey" => request()->apiKey,
             "plan" => request()->plan,
             "first_name" => request()->first_name,
             "last_name" => request()->last_name,
@@ -121,7 +122,7 @@ class Npay
         // Remove the fields which were not sent (value would be null)
         array_filter($data);
 
-        $this->setHttpResponse('/transaction', 'POST', $data);
+        $this->setHttpResponse('/api/initialize', 'POST', $data);
 
         return $this;
     }
@@ -235,7 +236,7 @@ class Npay
      */
     public function genTranxRef()
     {
-        return GenTransRef::getHashedToken();
+        return GenTransRef::getToken();
     }
 
     /**
