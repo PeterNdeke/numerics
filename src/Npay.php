@@ -114,7 +114,7 @@ class Npay
             "plan" => request()->plan,
             "first_name" => request()->first_name,
             "last_name" => request()->last_name,
-            "callback_url" => request()->callback_url,
+            "callbackUrl" => request()->callbackUrl,
            
             'metadata' => request()->metadata 
         ];
