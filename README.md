@@ -16,7 +16,7 @@ composer require numerics/npay
 Or add the following line to the require block of your `composer.json` file.
 
 ```
-"numericscoder/npay-laravel"
+"numerics/npay-laravel"
 ```
 
 You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
@@ -116,7 +116,7 @@ MERCHANT_EMAIL=merchant@gmail.com
 
 Set up routes and controller methods like so:
 
-Note: you have to provide your call back URL /payment/getTransaction, Because that is where we will redirect you after a successfull transaction
+Note: you have to provide your call back URL in this order yourdomain.com/payment/getTransaction, Because that is where we will redirect you after a successfull transaction
 you can also provide it as one of the params in your form that will be sent to us
 
 
@@ -159,8 +159,9 @@ class PaymentController extends Controller
      */
     public function handleGatewayCallback()
     {
-        $paymentDetails = Npay::getPaymentData();
-
+        $paymentData = $_GET['ref'];
+        $npay = new Npay();
+        $paymentDetails = $npay->getPaymentData($paymentData);
         dd($paymentDetails);
         // Now you can do whatever you want with the details;
         // you can save it in your database
@@ -191,7 +192,7 @@ A sample HTML form will look like so:
             <input type="hidden" name="reference" value="{{ Npay::genTranxRef() }}"> {{-- required --}}
             <input type="hidden" name="apiKey" value="{{ config('npay.secretKey') }}"> {{-- required --}}
             {{ csrf_field() }} {{-- works only when using laravel 5.1, 5.2 --}}
-            <input type="hidden" name="callbackUrl" value="your-callback-url"> {{-- required --}}
+            <input type="hidden" name="callbackUrl" value="yourdomain.com/payment/getTransaction"> {{-- required --}}
 
 
             <p>
