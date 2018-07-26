@@ -216,7 +216,8 @@ class Npay
         if ($this->isTransactionVerificationValid($reference)) {
             return $this->getResponse();
         } else {
-            throw new VerificationFailedException("Invalid Transaction Reference");
+            return $this->getResponse();
+           // throw new VerificationFailedException("Invalid Transaction Reference");
         }
     }
 
