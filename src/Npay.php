@@ -21,12 +21,12 @@ class Npay
     /**
      * Transaction Verification Successful
      */
-    const VS = 'Verification successful';
+    const VS = 'Transaction Successfull';
 
     /**
      *  Invalid Transaction reference
      */
-    const ITF = "Invalid transaction reference";
+    const ITF = "Invalid Transaction";
 
     /**
      * Secret API Key from Npay
@@ -158,18 +158,25 @@ class Npay
         $this->makePaymentRequest();
 
         $this->url = $this->getResponse()['data']['authorization_url'];
+        
 
         return $this;
     }
+    public function getReference()
+     {
+        $reference = $this->getResponse()['data']['reference'];
+        return $reference;
+     }
 
     /**
      * Hit npay Gateway to Verify that the transaction is valid
      */
-    private function verifyTransactionAtGateway()
+    private function verifyTransactionAtGateway($reference)
     {
-        $transactionRef = request()->query('trxref');
+       // $transactionRef = request()->query('trxref');
+        // $transactionRef = 'aj81nR3mEFbWP0uQPWzW4oJqdWc6T4';
 
-        $relativeUrl = "/transaction/verify/{$transactionRef}";
+        $relativeUrl = "/api/verifyTransaction/{$reference}";
 
         $this->response = $this->client->get($this->baseUrl . $relativeUrl, []);
     }
@@ -178,9 +185,9 @@ class Npay
      * True or false condition whether the transaction is verified
      * @return boolean
      */
-    public function isTransactionVerificationValid()
+    public function isTransactionVerificationValid($reference)
     {
-        $this->verifyTransactionAtGateway();
+        $this->verifyTransactionAtGateway($reference);
 
         $result = $this->getResponse()['message'];
 
@@ -204,9 +211,9 @@ class Npay
      * @return json
      * @throws VerificationFailedException
      */
-    public function getPaymentData()
+    public function getPaymentData($reference)
     {
-        if ($this->isTransactionVerificationValid()) {
+        if ($this->isTransactionVerificationValid($reference)) {
             return $this->getResponse();
         } else {
             throw new VerificationFailedException("Invalid Transaction Reference");
